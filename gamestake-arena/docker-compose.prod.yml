@@ -1,0 +1,37 @@
+# docker-compose.prod.yml
+version: '3.8'
+
+services:
+  postgres:
+    restart: always
+    ports:
+      - "5432:5432"  # Remove this line for production (use internal only)
+
+  redis:
+    restart: always
+    ports:
+      - "6379:6379"  # Remove this line for production
+
+  backend:
+    restart: always
+    environment:
+      NODE_ENV: production
+    ports:
+      - "5000:5000"  # Keep if using nginx as reverse proxy, otherwise remove
+
+  frontend-web:
+    restart: always
+
+  nginx:
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d/prod:/etc/nginx/conf.d:ro
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+
+  certbot:
+    restart: always
