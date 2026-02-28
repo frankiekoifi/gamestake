@@ -37,7 +37,7 @@ services:
     environment:
       POSTGRES_DB: ${DB_NAME:-gamestake}
       POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-Franko468158@}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-""}
       POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -67,7 +67,7 @@ services:
     image: redis:7-alpine
     container_name: gamestake-redis
     restart: unless-stopped
-    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-Franko468158@}
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-""}
     volumes:
       - redis_data:/data
     ports:
@@ -103,10 +103,10 @@ services:
       DB_PORT: 5432
       DB_NAME: ${DB_NAME:-gamestake}
       DB_USER: ${DB_USER:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-Franko468158@}
+      DB_PASSWORD: ${DB_PASSWORD:-""}
       
       # Redis
-      REDIS_URL: redis://:${REDIS_PASSWORD:-Franko468158@}@redis:6379
+      REDIS_URL: redis://:${REDIS_PASSWORD:-""}@redis:6379
       
       # JWT
       JWT_SECRET: ${JWT_SECRET}
@@ -257,7 +257,7 @@ services:
       POSTGRES_HOST: postgres
       POSTGRES_DB: ${DB_NAME:-gamestake}
       POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-Franko468158@}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-""}
       POSTGRES_EXTRA_OPTS: "--clean --if-exists"
       SCHEDULE: "@daily"
       BACKUP_DIR: /backups
@@ -270,4 +270,5 @@ services:
       - gamestake-network
     depends_on:
       - postgres
+
     logging: *default-logging
